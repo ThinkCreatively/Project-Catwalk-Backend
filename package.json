@@ -1,0 +1,24 @@
+{
+  "name": "SDC-QNA-API-Service",
+  "version": "1.0.0",
+  "description": "My Api Service for Questions & Answers, part of my System Design Capstone (SDC) project during my time at Hack Reactor",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThinkCreatively/SDC-QNA-API-Service.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ThinkCreatively/SDC-QNA-API-Service/issues"
+  },
+  "homepage": "https://github.com/ThinkCreatively/SDC-QNA-API-Service#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg": "^8.6.0"
+  }
+}
