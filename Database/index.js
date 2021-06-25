@@ -28,6 +28,24 @@ const getAllQuestionsUnderId10 = (callback) => {
   });
 };
 
+const addAQuestion = (params, callback) => {
+  pool.query('INSERT INTO questions (productId, body, date, askerName, askerEmail, reported, helpfullness) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    [params.productId,
+      params.body,
+      params.date,
+      params.askerName,
+      params.askerEmail,
+      params.reported,
+      params.helpfullness
+    ], (err, results) => {
+      if (err) {
+        callback(err, null);
+      } else {
+        callback(null, results);
+      }
+    });
+};
+
 module.exports = {
-  getAllQuestionsUnderId10
+  getAllQuestionsUnderId10, addAQuestion
 };
