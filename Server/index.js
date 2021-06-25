@@ -14,9 +14,9 @@ app.listen(PORT, () => {
   console.log(`Listening to port: ${PORT}`);
 });
 
-// Get all questions
+// Get all questions for product
 app.get('/api/qa/questions', (req, res) => {
-  db.getAllQuestionsUnderId10((err, results) => {
+  db.getAllQuestionsForProductId(req.body.productId, (err, results) => {
     if (err) {
       res.status(400).send(err);
     } else {
@@ -25,7 +25,7 @@ app.get('/api/qa/questions', (req, res) => {
   });
 });
 
-// Add a question
+// Add a question for product
 app.post('/api/qa/questions', (req, res) => {
   db.addAQuestion(req.body, (err, results) => {
     if (err) {

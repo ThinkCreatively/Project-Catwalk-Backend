@@ -1,14 +1,9 @@
 const { Pool } = require('pg');
+const { connection } = require('./config');
 
 const PORT = 5432;
 
-const pool = new Pool({
-  host: 'localhost',
-  user: 'qauser',
-  password: 'Xingbu99!',
-  database: 'questionsandanswers',
-  port: PORT
-});
+const pool = new Pool(connection);
 
 pool.connect((err) => {
   if (err) {
@@ -18,8 +13,8 @@ pool.connect((err) => {
   }
 });
 
-const getAllQuestionsUnderId10 = (callback) => {
-  pool.query('SELECT * FROM questions WHERE questionId < 10', (err, results) => {
+const getAllQuestionsForProductId = (productId, callback) => {
+  pool.query(`SELECT * FROM questions WHERE productId = ${productId}`, (err, results) => {
     if (err) {
       callback(err, null);
     } else {
@@ -29,14 +24,14 @@ const getAllQuestionsUnderId10 = (callback) => {
 };
 
 const addAQuestion = (params, callback) => {
-  pool.query('INSERT INTO questions (productId, body, date, askerName, askerEmail, reported, helpfullness) VALUES (?, ?, ?, ?, ?, ?, ?)',
+  console.log(params)
+  pool.query('INSERT INTO questions("productid", "body", "askername", "askeremail", "reported", "helpfullness") VALUES(1, \'this is test\', \'james\', \'email@email.com\', 0, 2)',
     [params.productId,
-      params.body,
-      params.date,
-      params.askerName,
-      params.askerEmail,
-      params.reported,
-      params.helpfullness
+    params.body,
+    params.askerName,
+    params.askerEmail,
+    params.reported,
+    params.helpfullness
     ], (err, results) => {
       if (err) {
         callback(err, null);
@@ -47,5 +42,5 @@ const addAQuestion = (params, callback) => {
 };
 
 module.exports = {
-  getAllQuestionsUnderId10, addAQuestion
+  getAllQuestionsForProductId, addAQuestion
 };
