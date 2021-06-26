@@ -25,6 +25,17 @@ app.get('/api/qa/questions', (req, res) => {
   });
 });
 
+// Get all answers for question
+app.get('/api/qa/questions/:question_id/answers', (req, res) => {
+  db.getQuestionAnswers(req.params.question_id, (err, results) => {
+    if (err) {
+      res.status(400).send(err);
+    } else {
+      res.status(200).send(results);
+    }
+  });
+});
+
 // Add a question for product
 app.post('/api/qa/questions', (req, res) => {
   db.addAQuestion(req.body, (err, results) => {

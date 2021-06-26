@@ -12,6 +12,7 @@ pool.connect((err) => {
   }
 });
 
+// Get questions for a product
 const getAllQuestionsForProductId = (productId, callback) => {
   pool.query(`SELECT * FROM questions WHERE productId = ${productId}`, (err, results) => {
     if (err) {
@@ -22,6 +23,7 @@ const getAllQuestionsForProductId = (productId, callback) => {
   });
 };
 
+// Add a question to a product
 const addAQuestion = (params, callback) => {
   pool.query('INSERT INTO questions("productid", "body", "askername", "askeremail", "reported", "helpfullness") VALUES($1, $2, $3, $4, $5, $6)',
     [params.productId,
@@ -39,6 +41,17 @@ const addAQuestion = (params, callback) => {
     });
 };
 
+// Get all answers for a question
+const getQuestionAnswers = (questionId, callback) => {
+  pool.query(`SELECT * FROM answers WHERE questionID = ${questionId}`, (err, results) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, results);
+    }
+  });
+};
+
 module.exports = {
-  getAllQuestionsForProductId, addAQuestion
+  getAllQuestionsForProductId, addAQuestion, getQuestionAnswers
 };
