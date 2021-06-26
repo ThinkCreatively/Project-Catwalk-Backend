@@ -25,7 +25,7 @@ app.get('/api/qa/questions', (req, res) => {
   });
 });
 
-// Get all answers for question
+// Get all answers for question that aren't reported
 app.get('/api/qa/questions/:question_id/answers', (req, res) => {
   db.getQuestionAnswers(req.params.question_id, (err, results) => {
     if (err) {
@@ -39,6 +39,17 @@ app.get('/api/qa/questions/:question_id/answers', (req, res) => {
 // Add a question for product
 app.post('/api/qa/questions', (req, res) => {
   db.addAQuestion(req.body, (err, results) => {
+    if (err) {
+      res.status(400).send(err);
+    } else {
+      res.status(200).send(results);
+    }
+  });
+});
+
+// Add a answer to a given question
+app.post('/api/qa/questions/:question_id/answers', (req, res) => {
+  db.addAnAnswer(req.body, req.params.question_id, (err, results) => {
     if (err) {
       res.status(400).send(err);
     } else {

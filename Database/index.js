@@ -23,10 +23,22 @@ const getAllQuestionsForProductId = (productId, callback) => {
   });
 };
 
+// Get all answers for a question that arent reported
+const getQuestionAnswers = (questionId, callback) => {
+  pool.query(`SELECT * FROM answers WHERE questionID = ${questionId} AND reported = 0`, (err, results) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, results);
+    }
+  });
+};
+
 // Add a question to a product
 const addAQuestion = (params, callback) => {
   pool.query('INSERT INTO questions("productid", "body", "askername", "askeremail", "reported", "helpfullness") VALUES($1, $2, $3, $4, $5, $6)',
-    [params.productId,
+    [
+      params.productId,
       params.body,
       params.askerName,
       params.askerEmail,
@@ -41,17 +53,26 @@ const addAQuestion = (params, callback) => {
     });
 };
 
-// Get all answers for a question
-const getQuestionAnswers = (questionId, callback) => {
-  pool.query(`SELECT * FROM answers WHERE questionID = ${questionId}`, (err, results) => {
-    if (err) {
-      callback(err, null);
-    } else {
-      callback(null, results);
-    }
-  });
+// Add a answer to a given question
+const addAnAnswer = (params, questionID, callback) => {
+  console.log(params, questionID);
+  pool.query('INSERT INTO answers("questionid", "body", "answername", "answeremail", "reported", "helpfulness") VALUES($1, $2, $3, $4, $5, $6)',
+    [
+      questionID,
+      params.body,
+      params.askerName,
+      params.askerEmail,
+      params.reported,
+      params.helpfulness
+    ], (err, results) => {
+      if (err) {
+        callback(err, null);
+      } else {
+        callback(null, results);
+      }
+    });
 };
 
 module.exports = {
-  getAllQuestionsForProductId, addAQuestion, getQuestionAnswers
+  getAllQuestionsForProductId, addAQuestion, getQuestionAnswers, addAnAnswer
 };
