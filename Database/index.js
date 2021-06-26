@@ -73,7 +73,7 @@ const addAnAnswer = (params, questionID, callback) => {
 };
 
 // Mark a question as helpful
-const markAsHelpful = (questionID, callback) => {
+const markQuestionAsHelpful = (questionID, callback) => {
   pool.query(`UPDATE questions SET helpfullness = helpfullness + 1 WHERE questionId = ${questionID}`, (err, results) => {
     if (err) {
       callback(err, null);
@@ -83,6 +83,46 @@ const markAsHelpful = (questionID, callback) => {
   });
 };
 
+// Report a question
+const reportQuestion = (questionID, callback) => {
+  pool.query(`UPDATE questions SET reported = reported + 1 WHERE questionId = ${questionID}`, (err, results) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, results);
+    }
+  });
+};
+
+// Mark an answer as helpful
+const markAnswerAsHelpful = (answerID, callback) => {
+  pool.query(`UPDATE answers SET helpfulness = helpfulness + 1 WHERE answerId = ${answerID}`, (err, results) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, results);
+    }
+  });
+};
+
+// Report a answer
+const reportAnswer = (answerID, callback) => {
+  pool.query(`UPDATE answers SET reported = reported + 1 WHERE answerId = ${answerID}`, (err, results) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, results);
+    }
+  });
+};
+
 module.exports = {
-  getAllQuestionsForProductId, addAQuestion, getQuestionAnswers, addAnAnswer, markAsHelpful
+  getAllQuestionsForProductId,
+  addAQuestion,
+  getQuestionAnswers,
+  addAnAnswer,
+  markQuestionAsHelpful,
+  reportQuestion,
+  markAnswerAsHelpful,
+  reportAnswer
 };

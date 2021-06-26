@@ -42,7 +42,7 @@ app.post('/api/qa/questions', (req, res) => {
     if (err) {
       res.status(400).send(err);
     } else {
-      res.status(200).send(results);
+      res.status(201).send(results);
     }
   });
 });
@@ -53,18 +53,51 @@ app.post('/api/qa/questions/:question_id/answers', (req, res) => {
     if (err) {
       res.status(400).send(err);
     } else {
-      res.status(200).send(results);
+      res.status(201).send(results);
     }
   });
 });
 
 // Mark a question as helpful
 app.put('/api/qa/questions/:question_id/helpful', (req, res) => {
-  db.markAsHelpful(req.params.question_id, (err, results) => {
+  db.markQuestionAsHelpful(req.params.question_id, (err, results) => {
     if (err) {
       res.status(400).send(err);
     } else {
-      res.status(200).send(results);
+      res.status(204).send(results);
+    }
+  });
+});
+
+// Mark a answer as helpful
+app.put('/api/qa/answers/:answer_id/helpful', (req, res) => {
+  db.markAnswerAsHelpful(req.params.answer_id, (err, results) => {
+    if (err) {
+      res.status(400).send(err);
+    } else {
+      res.status(204).send(results);
+    }
+  });
+});
+
+// Report a question
+app.put('/api/qa/questions/:question_id/report', (req, res) => {
+  db.reportQuestion(req.params.question_id, (err, results) => {
+    if (err) {
+      res.status(400).send(err);
+    } else {
+      res.status(204).send(results);
+    }
+  });
+});
+
+// Report a answer
+app.put('/api/qa/answers/:answer_id/report', (req, res) => {
+  db.reportAnswer(req.params.answer_id, (err, results) => {
+    if (err) {
+      res.status(400).send(err);
+    } else {
+      res.status(204).send(results);
     }
   });
 });
