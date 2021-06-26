@@ -55,7 +55,6 @@ const addAQuestion = (params, callback) => {
 
 // Add a answer to a given question
 const addAnAnswer = (params, questionID, callback) => {
-  console.log(params, questionID);
   pool.query('INSERT INTO answers("questionid", "body", "answername", "answeremail", "reported", "helpfulness") VALUES($1, $2, $3, $4, $5, $6)',
     [
       questionID,
@@ -73,6 +72,17 @@ const addAnAnswer = (params, questionID, callback) => {
     });
 };
 
+// Mark a question as helpful
+const markAsHelpful = (questionID, callback) => {
+  pool.query(`UPDATE questions SET helpfullness = helpfullness + 1 WHERE questionId = ${questionID}`, (err, results) => {
+    if (err) {
+      callback(err, null);
+    } else {
+      callback(null, results);
+    }
+  });
+};
+
 module.exports = {
-  getAllQuestionsForProductId, addAQuestion, getQuestionAnswers, addAnAnswer
+  getAllQuestionsForProductId, addAQuestion, getQuestionAnswers, addAnAnswer, markAsHelpful
 };

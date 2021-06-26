@@ -57,3 +57,14 @@ app.post('/api/qa/questions/:question_id/answers', (req, res) => {
     }
   });
 });
+
+// Mark a question as helpful
+app.put('/api/qa/questions/:question_id/helpful', (req, res) => {
+  db.markAsHelpful(req.params.question_id, (err, results) => {
+    if (err) {
+      res.status(400).send(err);
+    } else {
+      res.status(200).send(results);
+    }
+  });
+});
