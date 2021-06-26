@@ -55,14 +55,15 @@ const addAQuestion = (params, callback) => {
 
 // Add a answer to a given question
 const addAnAnswer = (params, questionID, callback) => {
-  pool.query('INSERT INTO answers("questionid", "body", "answername", "answeremail", "reported", "helpfulness") VALUES($1, $2, $3, $4, $5, $6)',
+  pool.query('INSERT INTO answers("questionid", "body", "answername", "answeremail", "reported", "helpfulness", "photos") VALUES($1, $2, $3, $4, $5, $6, $7)',
     [
       questionID,
       params.body,
       params.askerName,
       params.askerEmail,
       params.reported,
-      params.helpfulness
+      params.helpfulness,
+      params.photos
     ], (err, results) => {
       if (err) {
         callback(err, null);
