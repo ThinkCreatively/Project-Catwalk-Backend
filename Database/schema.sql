@@ -2,12 +2,12 @@
 
 -- psql -U postgres -h 127.0.0.1 -d questionsandanswers -f ./schema.sql;
 
-\copy questions
-FROM '/Users/jamesmoore/Documents/Orietation/QnA-API-Service/db/qa/CSVs/questions.csv'
+\copy answerPhotos
+FROM '/Users/jamesmoore/Documents/Orietation/QnA-API-Service/db/qa/CSVs/answers_photos.csv'
 DELIMITER ',' CSV HEADER;
 
-ALTER TABLE  answers
-  ALTER COLUMN date TYPE TIMESTAMP USING to_timestamp(date / 1000) + ((date % 1000) || ' milliseconds') :: INTERVAL SET DEFAULT (now);
+ALTER TABLE  questions
+  ALTER COLUMN date TYPE TIMESTAMP USING to_timestamp(date / 1000) + ((date % 1000) || ' milliseconds') :: INTERVAL;
 
 ALTER TABLE  questions
   ALTER COLUMN date SET DEFAULT now();
@@ -15,34 +15,32 @@ ALTER TABLE  questions
 
 -- DROP DATABASE IF EXISTS questionsandanswers;
 
-CREATE DATABASE questionsandanswers
+CREATE DATABASE qa
     WITH
     OWNER = postgres
 
 -- Tables
 CREATE TABLE questions (
-    questionId SERIAL,
+    questionId SERIAL PRIMARY KEY,
     productId BIGINT,
     body text,
     date BIGINT,
     askerName text,
     askerEmail text,
     reported BIGINT,
-    helpfullness BIGINT,
-    CONSTRAINT questions_pkey PRIMARY KEY (questionId)
+    helpfullness BIGINT
 );
 
 
 CREATE TABLE answers (
-    answerID BIGSERIAL,
+    answerId SERIAL PRIMARY KEY,
     questionID BIGSERIAL,
     body text,
     date BIGINT,
     answerName text,
     answerEmail text,
     reported BIGINT,
-    helpfulness BIGINT,
-    CONSTRAINT answers_pkey PRIMARY KEY (answerID)
+    helpfulness BIGINT
 );
 
 

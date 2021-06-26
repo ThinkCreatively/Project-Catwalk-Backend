@@ -1,7 +1,6 @@
+/* eslint-disable quotes */
 const { Pool } = require('pg');
 const { connection } = require('./config');
-
-const PORT = 5432;
 
 const pool = new Pool(connection);
 
@@ -9,7 +8,7 @@ pool.connect((err) => {
   if (err) {
     console.log('err', err);
   } else {
-    console.log(`Connected to postgreSQL on port: ${PORT}`);
+    console.log(`Connected to postgreSQL on port: ${connection.port}`);
   }
 });
 
@@ -24,14 +23,13 @@ const getAllQuestionsForProductId = (productId, callback) => {
 };
 
 const addAQuestion = (params, callback) => {
-  console.log(params)
-  pool.query('INSERT INTO questions("productid", "body", "askername", "askeremail", "reported", "helpfullness") VALUES(1, \'this is test\', \'james\', \'email@email.com\', 0, 2)',
+  pool.query('INSERT INTO questions("productid", "body", "askername", "askeremail", "reported", "helpfullness") VALUES($1, $2, $3, $4, $5, $6)',
     [params.productId,
-    params.body,
-    params.askerName,
-    params.askerEmail,
-    params.reported,
-    params.helpfullness
+      params.body,
+      params.askerName,
+      params.askerEmail,
+      params.reported,
+      params.helpfullness
     ], (err, results) => {
       if (err) {
         callback(err, null);
