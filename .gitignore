@@ -3,3 +3,4 @@ CSVs
 node_modules
 client/dist/bundle.js
 config.js
+.env

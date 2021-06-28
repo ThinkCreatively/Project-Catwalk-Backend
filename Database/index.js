@@ -1,6 +1,9 @@
 /* eslint-disable quotes */
 const { Pool } = require('pg');
 const { connection } = require('./config');
+// const { DBpassword } = process.env;
+
+const PORT = 5432;
 
 const pool = new Pool(connection);
 
@@ -8,7 +11,7 @@ pool.connect((err) => {
   if (err) {
     console.log('err', err);
   } else {
-    console.log(`Connected to postgreSQL on port: ${connection.port}`);
+    console.log(`Connected to postgreSQL on port: ${PORT}`);
   }
 });
 
