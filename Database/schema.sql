@@ -50,7 +50,8 @@ CREATE TABLE answers (
     answerName text,
     answerEmail text,
     reported BIGINT,
-    helpfulness BIGINT
+    helpfulness BIGINT,
+    photos TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[]
 );
 
 
