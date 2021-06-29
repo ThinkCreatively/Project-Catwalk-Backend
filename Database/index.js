@@ -24,15 +24,18 @@ const getAllQuestionsForProductId = (productId, callback) => {
   questions.askerName,
   questions.helpfullness,
   questions.reported,
-  jsonb_object_agg(answers.answerId, jsonb_build_object('id', answers.answerId,
+  jsonb_object_agg(answers.answerId, jsonb_build_object(
+  'id', answers.answerId,
   'body',answers.body,
   'date',answers.date,
   'answerName',answers.answerName,
   'helpfulness',answers.helpfulness,
   'photos', answers.photos)) AS answers
   FROM questions, answers
-  WHERE questions.questionId = 1 AND questions.questionId = answers.questionId
-  GROUP BY questions.questionId;`, (err, results) => {
+  WHERE questions.productId = ${productId}
+  AND questions.questionId = answers.questionId
+  AND questions.reported = 0
+  GROUP BY questions.questionId LIMIT 5;`, (err, results) => {
     if (err) {
       callback(err, null);
     } else {
@@ -41,24 +44,6 @@ const getAllQuestionsForProductId = (productId, callback) => {
   });
 };
 
-/*
-SELECT
-  questions.questionId,
-  questions.body,
-  questions.date,
-  questions.askerName,
-  questions.helpfullness,
-  questions.reported,
-  jsonb_agg(jsonb_build_object('id', answers.answerId,
-  'body',answers.body,
-  'date',answers.date,
-  'answerName',answers.answerName,
-  'helpfulness',answers.helpfulness,
-  'photos', answers.photos)) AS results
-  FROM questions, answers
-  WHERE questions.questionId = 1 AND questions.questionId = answers.questionId
-  GROUP BY questions.questionId;
-*/
 
 // Get all answers for a question that arent reported
 const getQuestionAnswers = (questionId, callback) => {
