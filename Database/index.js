@@ -1,7 +1,6 @@
 /* eslint-disable quotes */
 const { Pool } = require('pg');
 const { connection } = require('./config');
-// const { DBpassword } = process.env;
 
 const PORT = 5432;
 
@@ -16,6 +15,7 @@ pool.connect((err) => {
 });
 
 // Get questions for a product
+
 const getAllQuestionsForProductId = (productId, callback) => {
   pool.query(`SELECT
   questions.questionId,
@@ -24,19 +24,20 @@ const getAllQuestionsForProductId = (productId, callback) => {
   questions.askerName,
   questions.helpfullness,
   questions.reported,
-  jsonb_object_agg(answers.answerId, jsonb_build_object(
+  COALESCE (jsonb_object_agg(answers.answerId, jsonb_build_object(
   'id', answers.answerId,
   'body',answers.body,
   'date',answers.date,
   'answerName',answers.answerName,
   'helpfulness',answers.helpfulness,
-  'photos', answers.photos)) AS answers
-  FROM questions, answers
+  'photos', answers.photos))
+  FILTER (WHERE answers.answerId IS NOT NULL), '{}') AS answers
+  FROM questions LEFT JOIN answers ON (questions.questionId = answers.questionId)
   WHERE questions.productId = ${productId}
-  AND questions.questionId = answers.questionId
-  AND questions.reported = 0
+  AND questions.reported = false
   GROUP BY questions.questionId LIMIT 5;`, (err, results) => {
     if (err) {
+      console.log(err);
       callback(err, null);
     } else {
       callback(null, results);
@@ -44,6 +45,35 @@ const getAllQuestionsForProductId = (productId, callback) => {
   });
 };
 
+/*
+  const getAllQuestionsForProductId = (productId, callback) => {
+  let questions;
+  const answersForQuesArr = [];
+  pool.query(`SELECT questionId, body, date, askerName, helpfullness, reported
+  FROM questions
+  WHERE productId = ${productId}
+  AND reported = 0 LIMIT 5;`)
+    .then((results) => {
+      questions = results.rows;
+    })
+    .then(() => {
+      for (let i = 0; i < questions.length; i += 1) {
+        const questionId = questions[i].questionid;
+        pool.query(`SELECT answerId, body, date, answerName, helpfulness, photos
+          FROM answers WHERE questionID = ${questionId}`)
+          .then((results) => {
+            answersForQuesArr.concat(...results.rows);
+            // console.log(answersForQuesArr);
+          });
+      }
+      // console.log(answersForQuesArr);
+    });
+  // Promise.all(answersForQuesArr).then((values) => {
+  //   console.log(values);
+  // });
+  // .then(formatting happens);
+};
+*/
 
 // Get all answers for a question that arent reported
 const getQuestionAnswers = (questionId, callback) => {
