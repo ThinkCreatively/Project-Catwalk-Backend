@@ -30,11 +30,17 @@ app.get('/api/qa/questions', (req, res) => {
 
 // Get all answers for question that aren't reported
 app.get('/api/qa/questions/:question_id/answers', (req, res) => {
-  db.getQuestionAnswers(req.params.question_id, (err, results) => {
+  const questionId = req.params.question_id;
+  db.getQuestionAnswers(questionId, (err, results) => {
     if (err) {
       res.status(400).send(err);
     } else {
-      res.status(200).send(results);
+      res.status(200).send({
+        question: questionId,
+        page: results.page,
+        count: results.count,
+        results: results.rows
+      });
     }
   });
 });

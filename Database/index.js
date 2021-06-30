@@ -45,39 +45,25 @@ const getAllQuestionsForProductId = (productId, callback) => {
   });
 };
 
-/*
-  const getAllQuestionsForProductId = (productId, callback) => {
-  let questions;
-  const answersForQuesArr = [];
-  pool.query(`SELECT questionId, body, date, askerName, helpfullness, reported
-  FROM questions
-  WHERE productId = ${productId}
-  AND reported = 0 LIMIT 5;`)
-    .then((results) => {
-      questions = results.rows;
-    })
-    .then(() => {
-      for (let i = 0; i < questions.length; i += 1) {
-        const questionId = questions[i].questionid;
-        pool.query(`SELECT answerId, body, date, answerName, helpfulness, photos
-          FROM answers WHERE questionID = ${questionId}`)
-          .then((results) => {
-            answersForQuesArr.concat(...results.rows);
-            // console.log(answersForQuesArr);
-          });
-      }
-      // console.log(answersForQuesArr);
-    });
-  // Promise.all(answersForQuesArr).then((values) => {
-  //   console.log(values);
-  // });
-  // .then(formatting happens);
-};
-*/
-
 // Get all answers for a question that arent reported
+
+let currentQuestionId;
+let page = 1;
+let count = 5;
 const getQuestionAnswers = (questionId, callback) => {
-  pool.query(`SELECT * FROM answers WHERE questionID = ${questionId} AND reported = 0`, (err, results) => {
+  if (currentQuestionId === undefined) {
+    currentQuestionId = questionId;
+  } else if (currentQuestionId === questionId) {
+    page += 1;
+    count += 5;
+  } else {
+    currentQuestionId = questionId;
+    page = 1;
+    count = 5;
+  }
+  pool.query(`SELECT * FROM answers WHERE questionID = ${questionId} AND reported = false`, (err, results) => {
+    results.page = page;
+    results.count = count;
     if (err) {
       callback(err, null);
     } else {
