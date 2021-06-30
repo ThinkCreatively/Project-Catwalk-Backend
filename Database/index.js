@@ -61,15 +61,27 @@ const getQuestionAnswers = (questionId, callback) => {
     page = 1;
     count = 5;
   }
-  pool.query(`SELECT * FROM answers WHERE questionID = ${questionId} AND reported = false`, (err, results) => {
-    results.page = page;
-    results.count = count;
-    if (err) {
-      callback(err, null);
-    } else {
-      callback(null, results);
-    }
-  });
+  if (count > 5) {
+    pool.query(`SELECT * FROM answers WHERE questionID = ${questionId} AND reported = false OFFSET ${count}`, (err, results) => {
+      results.page = page;
+      results.count = count;
+      if (err) {
+        callback(err, null);
+      } else {
+        callback(null, results);
+      }
+    });
+  } else {
+    pool.query(`SELECT * FROM answers WHERE questionID = ${questionId} AND reported = false`, (err, results) => {
+      results.page = page;
+      results.count = count;
+      if (err) {
+        callback(err, null);
+      } else {
+        callback(null, results);
+      }
+    });
+  }
 };
 
 // Add a question to a product
