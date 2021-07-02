@@ -2,9 +2,11 @@
 
 -- psql -U postgres -h 127.0.0.1 -d questionsandanswers -f ./schema.sql;
 
--- \copy answerPhotos
--- FROM '/Users/jamesmoore/Documents/Orietation/QnA-API-Service/db/qa/CSVs/answers_photos.csv'
+-- \copy questions
+-- FROM '/Users/jamesmoore/Documents/Orietation/QnA-API-Service/db/qa/CSVs/questions.csv'
 -- DELIMITER ',' CSV HEADER;
+
+COPY answerPhotos FROM '/home/ubuntu/SDC-QNA-API-Service/Database/CSVs/answer_photos.csv' DELIMITER ',' CSV HEADER;
 
 -- ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
 
@@ -38,6 +40,15 @@
 -- CREATE INDEX productId_questions_idx ON questions (productId);
 -- CREATE INDEX reported_questions__idx ON questions (reported);
 -- CREATE INDEX questionId_answers_idx ON answers (questionId);
+
+-- ƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒƒ
+
+
+-- wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1TbhRZ_sKBAu2Z0-sppE55D051G3MVP9I' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1TbhRZ_sKBAu2Z0-sppE55D051G3MVP9I" -O answer_photos.csv && rm -rf /tmp/cookies.txt
+-- wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1yvXuqx6gT1ugD3vbVh6_tH8xEGx3Cwlb' -O questions.csv
+-- wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1TbhRZ_sKBAu2Z0-sppE55D051G3MVP9I' -O answers_photos.csv
+-- wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1xVnfJGxq0If2d3rJI1IUWTC1RLigik1l' -O answers.csv
+
 ---------------------------------------------------------------------------------------------------------------------------------------------
 DROP DATABASE IF EXISTS qa;
 

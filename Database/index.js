@@ -15,7 +15,6 @@ pool.connect((err) => {
 });
 
 // Get questions for a product
-
 const getAllQuestionsForProductId = (productId, callback) => {
   pool.query(`SELECT
   questions.questionId,
@@ -46,7 +45,6 @@ const getAllQuestionsForProductId = (productId, callback) => {
 };
 
 // Get all answers for a question that arent reported
-
 let currentQuestionId;
 let page = 1;
 let count = 5;
