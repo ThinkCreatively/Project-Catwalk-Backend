@@ -1,10 +1,11 @@
 # QNA-API-Service
 
-##Overview
+## Overview
 
-My Api Service for Questions & Answers, part of my System Design Capstone (SDC) project during my time at Hack Reactor
+My Api Service for Questions & Answers, part of my System Design Capstone (SDC) project during my time at Hack Reactor. The purpose of the project was to deep dive into a legacy code project given and to create a backend that is optimized, scalable, and fully functioning.
 
-## Key topics: 
-~ Optimizaiton of query times, from ~100ms to < 50ms
+## Key Topics: 
+~ Optimizaiton of query times
 ~ Becoming familiar with the psql shell
 ~ Deployment on multiple instances using AWS 
+~ Scaling using load a balancer
