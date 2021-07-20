@@ -1,3 +1,47 @@
+DROP DATABASE IF EXISTS qa;
+
+CREATE DATABASE qa
+    WITH
+    OWNER = postgres
+;
+-- Tables
+DROP TABLE IF EXISTS questions CASCADE;
+CREATE TABLE questions (
+    questionId SERIAL PRIMARY KEY NOT NULL,
+    productId BIGINT NOT NULL,
+    body text NOT NULL,
+    date BIGINT NOT NULL,
+    askerName text NOT NULL,
+    askerEmail text NOT NULL,
+    reported BOOLEAN NOT NULL,
+    helpfullness BIGINT NOT NULL
+);
+
+DROP TABLE IF EXISTS answers CASCADE;
+CREATE TABLE answers (
+    answerId SERIAL PRIMARY KEY NOT NULL,
+    questionID BIGSERIAL NOT NULL,
+    body text NOT NULL,
+    date BIGINT NOT NULL,
+    answerName text NOT NULL,
+    answerEmail text NOT NULL,
+    reported BOOLEAN NOT NULL,
+    helpfulness BIGINT NOT NULL
+);
+
+DROP TABLE IF EXISTS answerPhotos;
+CREATE TABLE answerPhotos (
+    photoID BIGSERIAL,
+    answerID BIGSERIAL,
+    URL text,
+    CONSTRAINT answerPhotos_pkey PRIMARY KEY (photoID),
+    CONSTRAINT answerID FOREIGN KEY (photoID)
+        REFERENCES answers (answerID) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+
+
 -- Useful lines for psql
 
 -- psql -U postgres -h 127.0.0.1 -d questionsandanswers -f ./schema.sql;
@@ -50,45 +94,3 @@ COPY answerPhotos FROM '/home/ubuntu/SDC-QNA-API-Service/Database/CSVs/answer_ph
 -- wget --no-check-certificate 'https://docs.google.com/uc?export=download&id=1xVnfJGxq0If2d3rJI1IUWTC1RLigik1l' -O answers.csv
 
 ---------------------------------------------------------------------------------------------------------------------------------------------
-DROP DATABASE IF EXISTS qa;
-
-CREATE DATABASE qa
-    WITH
-    OWNER = postgres
-;
--- Tables
-DROP TABLE IF EXISTS questions CASCADE;
-CREATE TABLE questions (
-    questionId SERIAL PRIMARY KEY NOT NULL,
-    productId BIGINT NOT NULL,
-    body text NOT NULL,
-    date BIGINT NOT NULL,
-    askerName text NOT NULL,
-    askerEmail text NOT NULL,
-    reported BOOLEAN NOT NULL,
-    helpfullness BIGINT NOT NULL
-);
-
-DROP TABLE IF EXISTS answers CASCADE;
-CREATE TABLE answers (
-    answerId SERIAL PRIMARY KEY NOT NULL,
-    questionID BIGSERIAL NOT NULL,
-    body text NOT NULL,
-    date BIGINT NOT NULL,
-    answerName text NOT NULL,
-    answerEmail text NOT NULL,
-    reported BOOLEAN NOT NULL,
-    helpfulness BIGINT NOT NULL
-);
-
-DROP TABLE IF EXISTS answerPhotos;
-CREATE TABLE answerPhotos (
-    photoID BIGSERIAL,
-    answerID BIGSERIAL,
-    URL text,
-    CONSTRAINT answerPhotos_pkey PRIMARY KEY (photoID),
-    CONSTRAINT answerID FOREIGN KEY (photoID)
-        REFERENCES answers (answerID) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-);
